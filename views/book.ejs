@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Schedule</title>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/fullcalendar/1.6.4/fullcalendar.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/start/jquery-ui.css">
+	<!-- Custom styles for this template -->
+	<link href="./resources/css/cover.css" rel="stylesheet" />
+	<link href="./resources/css/book.css" rel="stylesheet" />
+	
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="site-wrapper">
+		<div class="site-wrapper-inner">
+			<div class="cover-container">
+				<div class="masthead clearfix">
+					<div class="inner">
+						<h2 class="masthead-brand"><a href="http://www.buildingoperations.ubc.ca/">UBC</a></h2>
+						<ul class="nav masthead-nav">
+							<li><a href="/">Home</a></li>
+							<li><a href="/#">Contact</a></li>	
+							<li class="active"><a href="/book">Book EV</a></li>	
+							<li><a href="/">Monitor</a></li>
+							<li><a href="/logout">Logout</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="inner cover">
+					<div id="calendar"></div>
+				</div>
+			</div>
+		</div>
+    </div>
+	<div class="modal fade" id="insert" tabindex="-1" role="dialog" aria-labelledby="insertLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="insertLabel">Reserve Time</h4>
+				</div>
+				<div class="modal-body form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="subject">Subject</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="subject" name="subject">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class='col-sm-6'>
+							<div class="form-group">
+								<div class='input-group date' id='datetimepicker1'>
+									<input type='text' class="form-control" />
+									<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox"> All day event
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="insert()">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
+	<script src="//cdn.jsdelivr.net/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			// page is now ready, initialize the calendar...
+			$('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				defaultView: 'agendaWeek',
+				editable: true,
+				aspectRatio: 2,
+				allDayText: '',
+				slotEventOverlap: false,
+				events: [
+					{
+						title: 'Test Event',
+						start: (new Date()).toString(),
+						allDay: false
+					}
+				],
+				eventBackgroundColor: '#52CC52',
+				eventBorderColor: '#5C85FF',
+				theme: true,
+				dayClick: function(date, jsEvent, view) {
+					$('#insert').modal('show');
+					/*
+					alert('Clicked on: ' + date.toString());
+
+					alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+					alert('Current view: ' + view.name);
+
+					// change the day's background color just for fun
+					console.log(this);
+					$(this).css('background-color', 'red');*/
+
+				}
+			});
+			$.fn.serializeObject = function()
+			{
+			   var o = {};
+			   var a = this.serializeArray();
+			   $.each(a, function() {
+				   if (o[this.name]) {
+					   if (!o[this.name].push) {
+						   o[this.name] = [o[this.name]];
+					   }
+					   o[this.name].push(this.value || '');
+				   } else {
+					   o[this.name] = this.value || '';
+				   }
+			   });
+			   return o;
+			};
+			
+              //  $('#datetimepicker1').datetimepicker();
+			/*
+			$('button[type="submit"]').on('click', function(e) {
+				e.preventDefault();
+				$.ajax({
+					url: '/register',
+					dataType: 'json',
+					contentType: "application/json",
+					data: $('#signup').serializeObject(),
+					type: 'POST',
+					success: function(data) {
+						console.log(data);
+					},
+					error: function() {
+						console.log('err');
+					}
+					
+				});
+			});*/
+		});
+		function insert() {
+			var d = {test:'test'};
+			$.ajax({
+				url: '/book/reserve',
+				dataType: 'json',
+				contentType: "application/json",
+				data: JSON.stringify(d),
+				type: 'POST',
+				success: function(data) {
+					console.log(data);
+				},
+				error: function(err) {
+					console.log(err);
+				}
+				
+			});
+		}
+	</script>
+
+</body>
+</html>

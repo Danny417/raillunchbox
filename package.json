@@ -1,0 +1,13 @@
+{
+	"name" : "jocy_resturant",
+	"dependencies" : {
+		"express" : "",
+		"passport" : "",
+		"passport-local" : "",
+		"body-parser" : "",
+		"cookie-parser" : "",
+		"express-session" : "",
+		"mysql" : ""
+	},
+	"engine" : "node "
+}
